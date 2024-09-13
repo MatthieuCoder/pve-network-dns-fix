@@ -1,0 +1,36 @@
+
+
+Signed-off-by: Alexandre Derumier <aderumier at odiso.com>
+---
+ src/services/01-dnsmasq-vrf.conf | 4 ++++
+ src/services/Makefile            | 1 +
+ 2 files changed, 5 insertions(+)
+ create mode 100644 src/services/01-dnsmasq-vrf.conf
+
+diff --git a/src/services/01-dnsmasq-vrf.conf b/src/services/01-dnsmasq-vrf.conf
+new file mode 100644
+index 0000000..1030df2
+--- /dev/null
++++ b/src/services/01-dnsmasq-vrf.conf
+@@ -0,0 +1,4 @@
++[Service]
++EnvironmentFile=/etc/default/dnsmasq.%i
++ExecStart=
++ExecStart=/bin/ip vrf exec ${VRF} /etc/init.d/dnsmasq systemd-exec "%i"
+\ No newline at end of file
+diff --git a/src/services/Makefile b/src/services/Makefile
+index 818c106..7c45701 100644
+--- a/src/services/Makefile
++++ b/src/services/Makefile
+@@ -8,6 +8,7 @@ install:
+ 	install -d $(SERVICEDIR)
+ 	install -d $(SERVICEDIR)/dnsmasq at .service.d
+ 	install -t $(SERVICEDIR)/dnsmasq at .service.d -m 0644 00-dnsmasq-after-networking.conf
++	install -t $(SERVICEDIR)/dnsmasq at .service.d -m 0644 01-dnsmasq-vrf.conf
+ 
+ .PHONY: clean
+ clean:
+-- 
+2.39.2
+
+

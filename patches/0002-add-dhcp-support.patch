@@ -1,0 +1,19 @@
+Signed-off-by: Alexandre Derumier <aderumier at odiso.com>
+---
+ src/PVE/Network/SDN/Zones/EvpnPlugin.pm | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/PVE/Network/SDN/Zones/EvpnPlugin.pm b/src/PVE/Network/SDN/Zones/EvpnPlugin.pm
+index 561d127..6c20b68 100644
+--- a/src/PVE/Network/SDN/Zones/EvpnPlugin.pm
++++ b/src/PVE/Network/SDN/Zones/EvpnPlugin.pm
+@@ -99,6 +99,7 @@ sub options {
+ 	reversedns => { optional => 1 },
+ 	dnszone => { optional => 1 },
+ 	ipam => { optional => 1 },
++	dhcp => { optional => 1 },
+     };
+ }
+ 
+-- 
+2.39.2

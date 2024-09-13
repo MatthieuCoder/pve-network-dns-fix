@@ -1,0 +1,106 @@
+Signed-off-by: Alexandre Derumier <aderumier at odiso.com>
+---
+ src/PVE/Network/SDN/Dhcp.pm             |  3 ++-
+ src/PVE/Network/SDN/Dhcp/Dnsmasq.pm     |  3 ++-
+ src/PVE/Network/SDN/Zones.pm            | 10 ++++++++++
+ src/PVE/Network/SDN/Zones/EvpnPlugin.pm |  6 ++++++
+ src/PVE/Network/SDN/Zones/Plugin.pm     |  6 ++++++
+ 5 files changed, 26 insertions(+), 2 deletions(-)
+
+diff --git a/src/PVE/Network/SDN/Dhcp.pm b/src/PVE/Network/SDN/Dhcp.pm
+index 7876c08..7b5e31f 100644
+--- a/src/PVE/Network/SDN/Dhcp.pm
++++ b/src/PVE/Network/SDN/Dhcp.pm
+@@ -79,12 +79,13 @@ sub regenerate_config {
+         my $zone = $zone_cfg->{ids}->{$zoneid};
+         next if !$zone->{dhcp};
+ 
++	my $vrf = PVE::Network::SDN::Zones::get_vrf($zoneid);
+ 	my $dhcp_plugin_name = $zone->{dhcp};
+ 	my $dhcp_plugin = PVE::Network::SDN::Dhcp::Plugin->lookup($dhcp_plugin_name);
+ 
+ 	die "Could not find DHCP plugin: $dhcp_plugin_name" if !$dhcp_plugin;
+ 
+-	eval { $dhcp_plugin->before_configure($zoneid) };
++	eval { $dhcp_plugin->before_configure($zoneid, $vrf) };
+ 	die "Could not run before_configure for DHCP server $zoneid $@\n" if $@;
+ 
+ 	for my $vnetid (sort keys %{$vnet_cfg->{ids}}) {
+diff --git a/src/PVE/Network/SDN/Dhcp/Dnsmasq.pm b/src/PVE/Network/SDN/Dhcp/Dnsmasq.pm
+index 2844943..755bc0b 100644
+--- a/src/PVE/Network/SDN/Dhcp/Dnsmasq.pm
++++ b/src/PVE/Network/SDN/Dhcp/Dnsmasq.pm
+@@ -164,7 +164,7 @@ sub configure_vnet {
+ }
+ 
+ sub before_configure {
+-    my ($class, $dhcpid) = @_;
++    my ($class, $dhcpid, $vrf) = @_;
+ 
+     my $dbus_config = <<DBUSCFG;
+ <!DOCTYPE busconfig PUBLIC
+@@ -198,6 +198,7 @@ DBUSCFG
+     my $default_config = <<CFG;
+ CONFIG_DIR='$config_directory,\*.conf'
+ DNSMASQ_OPTS="--conf-file=/dev/null --enable-dbus=uk.org.thekelleys.dnsmasq.$dhcpid"
++VRF='$vrf'
+ CFG
+ 
+     PVE::Tools::file_set_contents(
+diff --git a/src/PVE/Network/SDN/Zones.pm b/src/PVE/Network/SDN/Zones.pm
+index 5bd3536..354cbe0 100644
+--- a/src/PVE/Network/SDN/Zones.pm
++++ b/src/PVE/Network/SDN/Zones.pm
+@@ -104,6 +104,16 @@ sub get_vnets {
+     return $vnets;
+ }
+ 
++sub get_vrf {
++    my ($zoneid) = @_;
++
++    my $zone_cfg = PVE::Network::SDN::Zones::config();
++    my $plugin_config = $zone_cfg->{ids}->{$zoneid};
++
++    my $plugin = PVE::Network::SDN::Zones::Plugin->lookup($plugin_config->{type});
++    return $plugin->get_vrf($plugin_config, $zoneid);
++}
++
+ sub generate_etc_network_config {
+ 
+     my $cfg = PVE::Network::SDN::running_config();
+diff --git a/src/PVE/Network/SDN/Zones/EvpnPlugin.pm b/src/PVE/Network/SDN/Zones/EvpnPlugin.pm
+index 655a9f0..561d127 100644
+--- a/src/PVE/Network/SDN/Zones/EvpnPlugin.pm
++++ b/src/PVE/Network/SDN/Zones/EvpnPlugin.pm
+@@ -272,6 +272,12 @@ sub generate_sdn_config {
+     return $config;
+ }
+ 
++sub get_vrf {
++    my ($class, $plugin_config, $zoneid) = @_;
++
++    return "vrf_$zoneid";
++}
++
+ sub on_update_hook {
+     my ($class, $zoneid, $zone_cfg, $controller_cfg) = @_;
+ 
+diff --git a/src/PVE/Network/SDN/Zones/Plugin.pm b/src/PVE/Network/SDN/Zones/Plugin.pm
+index 69a6e5a..ee7bbb2 100644
+--- a/src/PVE/Network/SDN/Zones/Plugin.pm
++++ b/src/PVE/Network/SDN/Zones/Plugin.pm
+@@ -140,6 +140,12 @@ sub controller_reload {
+     die "please implement inside plugin";
+ }
+ 
++sub get_vrf {
++    my ($class, $plugin_config, $zoneid) = @_;
++
++    return 'default';
++}
++
+ sub on_delete_hook {
+     my ($class, $zoneid, $vnet_cfg) = @_;
+ 
+-- 
+2.39.2

@@ -1,0 +1,52 @@
+From 501a9671aa991649f0be5c262cc7bd0f5f61804b Mon Sep 17 00:00:00 2001
+From: Matthieu Pignolet <matthieu@matthieu-dev.xyz>
+Date: Sun, 2 Jun 2024 18:17:06 +0400
+Subject: [PATCH] fix: Take care of the rrset's record types before sending
+ updates
+
+This fixes and edgecase where rrset types are mixed,
+this appends when a given host had both an ipv6 and ipv4 address with the same DNS suffix configured,
+This is fixed by avoiding the mix or multiple rrset types (AAAA and A) in the same rrset by adding a
+check to the "get_zone_rrset" linear search function.
+---
+ src/PVE/Network/SDN/Dns/PowerdnsPlugin.pm | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/src/PVE/Network/SDN/Dns/PowerdnsPlugin.pm b/src/PVE/Network/SDN/Dns/PowerdnsPlugin.pm
+index dae63d1..70b7b80 100644
+--- a/src/PVE/Network/SDN/Dns/PowerdnsPlugin.pm
++++ b/src/PVE/Network/SDN/Dns/PowerdnsPlugin.pm
+@@ -57,7 +57,7 @@ sub add_a_record {
+     my $fqdn = $hostname.".".$zone.".";
+ 
+     my $zonecontent = get_zone_content($plugin_config, $zone);
+-    my $existing_rrset = get_zone_rrset($zonecontent, $fqdn);
++    my $existing_rrset = get_zone_rrset($zonecontent, $fqdn, $type);
+ 
+     my $final_records = [];
+     for my $record (@{$existing_rrset->{records}}) {
+@@ -133,7 +133,7 @@ sub del_a_record {
+     my $type = Net::IP::ip_is_ipv6($ip) ? "AAAA" : "A";
+ 
+     my $zonecontent = get_zone_content($plugin_config, $zone);
+-    my $existing_rrset = get_zone_rrset($zonecontent, $fqdn);
++    my $existing_rrset = get_zone_rrset($zonecontent, $fqdn, $type);
+ 
+     my $final_records = [ grep { $_->{content} ne $ip } $existing_rrset->{records}->@* ];
+     my $final_records_size = scalar($final_records->@*);
+@@ -278,10 +278,10 @@ sub get_zone_content {
+ }
+ 
+ sub get_zone_rrset {
+-    my ($zonecontent, $name) = @_;
++    my ($zonecontent, $name, $type) = @_;
+ 
+     for my $rrset (@{$zonecontent->{rrsets}}) {
+-	return $rrset if $rrset->{name} eq $name;
++	return $rrset if $rrset->{name} eq $name and ($rrset->{type} eq $type);
+     }
+     return; # not found
+ }
+-- 
+2.46.0
+
