@@ -211,7 +211,7 @@ DBUSCFG
     my $zone_plugin_name = $zone_cfg->{type};
     my $zone_plugin = PVE::Network::SDN::Zones::Plugin->lookup($zone_plugin_name);
     die "Could not find Zone plugin: $zone_plugin_name" if !$zone_plugin;
-    my $vrf = $zone_plugin->get_vrf($zone_cfg, $zoneid)
+    my $vrf = $zone_plugin->get_vrf($zone_cfg, $zone_cfg->{zone});
 
     my $default_config = <<CFG;
 CONFIG_DIR='$config_directory,\*.conf'
