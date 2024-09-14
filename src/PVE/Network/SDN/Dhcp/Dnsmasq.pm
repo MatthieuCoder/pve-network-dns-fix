@@ -208,9 +208,15 @@ DBUSCFG
 
     mkdir($config_directory, 0755) if !-d $config_directory;
 
+    my $zone_plugin_name = $zone_cfg->{type};
+    my $zone_plugin = PVE::Network::SDN::Zones::Plugin->lookup($zone_plugin_name);
+    die "Could not find Zone plugin: $zone_plugin_name" if !$zone_plugin;
+    my $vrf = $zone_plugin->get_vrf($zone_cfg, $zoneid)
+
     my $default_config = <<CFG;
 CONFIG_DIR='$config_directory,\*.conf'
 DNSMASQ_OPTS="--conf-file=/dev/null --enable-dbus=uk.org.thekelleys.dnsmasq.$dhcpid"
+VRF='$vrf'
 CFG
 
     PVE::Tools::file_set_contents(

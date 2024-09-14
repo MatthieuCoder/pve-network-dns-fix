@@ -100,6 +100,7 @@ sub options {
 	reversedns => { optional => 1 },
 	dnszone => { optional => 1 },
 	ipam => { optional => 1 },
+	dhcp => { optional => 1 },
     };
 }
 
@@ -271,6 +272,12 @@ sub generate_sdn_config {
 	}
     }
     return $config;
+}
+
+sub get_vrf {
+    my ($class, $plugin_config, $zoneid) = @_;
+
+    return "vrf_$zoneid";
 }
 
 sub on_update_hook {
