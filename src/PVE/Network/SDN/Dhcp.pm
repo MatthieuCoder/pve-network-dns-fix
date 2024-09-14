@@ -81,10 +81,9 @@ sub regenerate_config {
 
 	my $dhcp_plugin_name = $zone->{dhcp};
 	my $dhcp_plugin = PVE::Network::SDN::Dhcp::Plugin->lookup($dhcp_plugin_name);
+    die "Could not find DHCP plugin: $dhcp_plugin_name" if !$dhcp_plugin;
 
-	die "Could not find DHCP plugin: $dhcp_plugin_name" if !$dhcp_plugin;
-
-	eval { $dhcp_plugin->before_configure($zoneid, $zone) };
+	eval { $dhcp_plugin->before_configure($zoneid) };
 	die "Could not run before_configure for DHCP server $zoneid $@\n" if $@;
 
 	for my $vnetid (sort keys %{$vnet_cfg->{ids}}) {

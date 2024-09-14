@@ -28,11 +28,6 @@ sub properties {
 	    type => 'string', format => 'dns-name',
 	    description => "dns domain zone  ex: mydomain.com",
 	},
-	dhcp => {
-	    description => 'Type of the DHCP backend for this zone',
-	    type => 'string',
-	    enum => PVE::Network::SDN::Dhcp::Plugin->lookup_types(),
-	},
     };
 }
 
@@ -145,9 +140,9 @@ sub vnet_update_hook {
 }
 
 sub get_mtu {
-    my ($class, $plugin_config) = @_;
+    my ($class, $zoneid, $zone_config) = @_;
 
-    return $plugin_config->{mtu};
+    return $zone_config->{mtu};
 }
 
 1;

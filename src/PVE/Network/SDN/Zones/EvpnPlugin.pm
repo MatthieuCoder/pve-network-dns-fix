@@ -274,10 +274,15 @@ sub generate_sdn_config {
     return $config;
 }
 
-sub get_vrf {
-    my ($class, $plugin_config, $zoneid) = @_;
+sub get_mtu {
+    my ($class, $zoneid, $zone_config) = @_;
 
-    return "vrf_$zoneid";
+    return $zone_config->{mtu};
+}
+
+sub get_vrf {
+	my ($class, $zoneid, $zone_config) = @_;
+	return "vrf_$zoneid";
 }
 
 sub on_update_hook {

@@ -51,6 +51,11 @@ my $defaultData = {
 	    description => "use a specific ipam",
 	    optional => 1,
 	},
+	dhcp => {
+	    description => 'Type of the DHCP backend for this zone',
+	    type => 'string',
+	    enum => PVE::Network::SDN::Dhcp::Plugin->lookup_types(),
+	},
     },
 };
 
@@ -363,8 +368,12 @@ sub datacenter_config {
 
 
 sub get_mtu {
-    my ($class, $plugin_config) = @_;
+    my ($class, $zoneid, $zoneconfig) = @_;
+    die "please implement inside plugin";
+}
 
+sub get_vrf {
+    my ($class, $zoneid, $zoneconfig) = @_;
     die "please implement inside plugin";
 }
 

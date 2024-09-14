@@ -43,7 +43,7 @@ sub configure_vnet {
 }
 
 sub before_configure {
-    my ($class, $dhcpid, $zone_config) = @_;
+    my ($class, $dhcpid) = @_;
     die 'implement in sub class';
 }
 

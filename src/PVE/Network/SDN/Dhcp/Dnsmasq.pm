@@ -177,7 +177,7 @@ sub systemctl_service {
 }
 
 sub before_configure {
-    my ($class, $dhcpid, $zone_cfg) = @_;
+    my ($class, $dhcpid) = @_;
 
     my $dbus_config = <<DBUSCFG;
 <!DOCTYPE busconfig PUBLIC
@@ -208,10 +208,9 @@ DBUSCFG
 
     mkdir($config_directory, 0755) if !-d $config_directory;
 
-    my $zone_plugin_name = $zone_cfg->{type};
-    my $zone_plugin = PVE::Network::SDN::Zones::Plugin->lookup($zone_plugin_name);
-    die "Could not find Zone plugin: $zone_plugin_name" if !$zone_plugin;
-    my $vrf = $zone_plugin->get_vrf($zone_cfg, $zone_cfg->{zone});
+    my $zone_config = PVE::Network::SDN::Zones::get_zone($dhcpid);
+    my $vrf = PVE::Network::SDN::Zones::get_vrf($dhcpid, $zone_config);
+    my $mtu = PVE::Network::SDN::Zones::get_mtu($dhcpid, $zone_config);
 
     my $default_config = <<CFG;
 CONFIG_DIR='$config_directory,\*.conf'
@@ -223,8 +222,6 @@ CFG
 	"$DNSMASQ_DEFAULT_ROOT/dnsmasq.$dhcpid",
 	$default_config
     );
-
-    my $mtu = PVE::Network::SDN::Zones::get_mtu($zone_cfg);
 
     my $default_dnsmasq_config = <<CFG;
 except-interface=lo
