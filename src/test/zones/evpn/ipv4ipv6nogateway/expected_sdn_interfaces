@@ -18,6 +18,7 @@ iface vrf_myzone
 auto vrfbr_myzone
 iface vrfbr_myzone
 	bridge-ports vrfvx_myzone
+	address 10.255.255.1/32
 	bridge_stp off
 	bridge_fd 0
 	mtu 1450

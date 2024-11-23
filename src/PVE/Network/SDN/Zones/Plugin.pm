@@ -374,7 +374,7 @@ sub get_mtu {
 
 sub get_vrf {
     my ($class, $zoneid, $zoneconfig) = @_;
-    die "please implement inside plugin";
+    return "default";
 }
 
 1;

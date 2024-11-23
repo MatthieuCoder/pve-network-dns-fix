@@ -503,6 +503,8 @@ sub generate_controller_rawconfig {
     my $final_config = [];
     push @{$final_config}, "frr version 8.5.2";
     push @{$final_config}, "frr defaults datacenter";
+    push @{$final_config}, "ip forwarding";
+    push @{$final_config}, "ipv6 forwarding";
     push @{$final_config}, "hostname $nodename";
     push @{$final_config}, "log syslog informational";
     push @{$final_config}, "service integrated-vtysh-config";

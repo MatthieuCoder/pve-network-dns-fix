@@ -1,5 +1,7 @@
 frr version 8.5.2
 frr defaults datacenter
+ip forwarding
+ipv6 forwarding
 hostname localhost
 log syslog informational
 service integrated-vtysh-config

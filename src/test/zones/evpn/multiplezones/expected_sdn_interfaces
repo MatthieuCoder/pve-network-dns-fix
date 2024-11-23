@@ -35,17 +35,21 @@ iface vrf_myzone2
 auto vrfbr_myzone
 iface vrfbr_myzone
 	bridge-ports vrfvx_myzone
+	address 10.255.255.1/32
 	bridge_stp off
 	bridge_fd 0
 	mtu 1450
+	ip-forward on
 	vrf vrf_myzone
 
 auto vrfbr_myzone2
 iface vrfbr_myzone2
 	bridge-ports vrfvx_myzone2
+	address 10.255.255.1/32
 	bridge_stp off
 	bridge_fd 0
 	mtu 1450
+	ip-forward on
 	vrf vrf_myzone2
 
 auto vrfvx_myzone

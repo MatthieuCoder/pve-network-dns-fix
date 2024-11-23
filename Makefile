@@ -2,7 +2,7 @@ include /usr/share/dpkg/pkg-info.mk
 
 PACKAGE=libpve-network-perl
 
-BUILDDIR ?= $(PACKAGE)-$(DEB_VERSION_UPSTREAM)
+BUILDDIR ?= $(PACKAGE)-$(DEB_VERSION_UPSTREAM)+patch1matthieu
 
 DEB=$(PACKAGE)_$(DEB_VERSION_UPSTREAM_REVISION)_all.deb
 DSC=$(PACKAGE)_$(DEB_VERSION_UPSTREAM_REVISION).dsc

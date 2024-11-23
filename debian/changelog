@@ -1,4 +1,65 @@
-libpve-network-perl (0.9.8) bookworm; urgency=medium
+libpve-network-perl (0.9.8+matthieu-patch7-var3) bookworm; urgency=medium
+
+  * dhcp: set lease time to 0
+
+ -- Matthieu Pignolet <matthieu@mpgn.dev>
+
+libpve-network-perl (0.9.8+matthieu-patch7-var3) bookworm; urgency=medium
+
+  * evpn zone: add ip routing for vrfbr interfaces
+
+ -- Matthieu Pignolet <matthieu@mpgn.dev>
+ 
+libpve-network-perl (0.9.8+matthieu-patch6-var3) bookworm; urgency=medium
+
+  * evpn zone: add ip routing for vrfbr interfaces
+
+ -- Matthieu Pignolet <matthieu@mpgn.dev>
+
+libpve-network-perl (0.9.8+matthieu-patch6-var2) bookworm; urgency=medium
+
+  * evpn zone: add dummy interface address in vrfbr
+
+ -- Matthieu Pignolet <matthieu@mpgn.dev>
+
+libpve-network-perl (0.9.8+matthieu-patch5-var1) bookworm; urgency=medium
+
+  * dnsmasq: use system dns servers 
+
+ -- Matthieu Pignolet <matthieu@mpgn.dev>
+
+libpve-network-perl (0.9.8+matthieu-patch4) bookworm; urgency=medium
+
+  * evpn: remove base vxlan for zone where 
+
+ -- Matthieu Pignolet <matthieu@mpgn.dev>
+
+libpve-network-perl (0.9.8+matthieu-patch3) bookworm; urgency=medium
+
+  * bgp: fix routes coming from the evpn backbone
+
+ -- Matthieu Pignolet <matthieu@mpgn.dev>
+
+libpve-network-perl (0.9.8+matthieu-patch2) bookworm; urgency=medium
+
+  * bgp: fix routes coming from the evpn backbone
+
+ -- Matthieu Pignolet <matthieu@mpgn.dev>
+
+libpve-network-perl (0.9.8+matthieu-patch1) bookworm; urgency=medium
+
+  * bgp: make ipv6 be published to all peers
+
+ -- Matthieu Pignolet <matthieu@mpgn.dev>
+
+libpve-network-perl (0.9.8+matthieu-patch) bookworm; urgency=medium
+
+  * dhcp: dnsmasq: add support for vrf(s)
+  * evpn: add support for dhcp
+
+ -- Matthieu Pignolet <matthieu@mpgn.dev>
+ 
+ libpve-network-perl (0.9.8) bookworm; urgency=medium
 
   * zones: add method for getting MTU
 

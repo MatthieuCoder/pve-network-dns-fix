@@ -1,5 +1,7 @@
 frr version 8.5.2
 frr defaults datacenter
+ip forwarding
+ipv6 forwarding
 hostname localhost
 log syslog informational
 service integrated-vtysh-config
@@ -28,6 +30,11 @@ router bgp 65001
  neighbor 192.168.0.253 peer-group BGP
  !
  address-family ipv4 unicast
+  neighbor BGP activate
+  neighbor BGP soft-reconfiguration inbound
+ exit-address-family
+ !
+ address-family ipv6 unicast
   neighbor BGP activate
   neighbor BGP soft-reconfiguration inbound
  exit-address-family
