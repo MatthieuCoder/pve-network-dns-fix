@@ -1,3 +1,9 @@
+libpve-network-perl (0.10.0+matthieu) bookworm; urgency=medium
+
+  * apply matthieu-specific patches
+
+ -- Matthieu Pignolet <m@mpgn.dev>  Wed, 23 Nov 2024 11:43:00 +0300
+
 libpve-network-perl (0.10.0) bookworm; urgency=medium
 
   * d/postinst: do not break, if moving either ipam state or cache file fails
