@@ -8,7 +8,8 @@ Build-Depends: debhelper-compat (= 13),
                libnet-subnet-perl,
                libtest-mockmodule-perl,
                perl,
-               pve-cluster (>= 8.0.5),
+               pve-cluster (>= 8.0.10),
+               pve-firewall (>= 5.1.0~),
                pve-doc-generator (>= 5.3-3),
                libpve-access-control,
 Standards-Version: 4.6.1
@@ -17,7 +18,7 @@ Homepage: https://www.proxmox.com
 Package: libpve-network-perl
 Architecture: all
 Depends: libpve-common-perl (>= 5.0-45),
-         pve-cluster (>= 8.0.5),
+         pve-cluster (>= 8.0.10),
          libnet-subnet-perl,
          libnet-ip-perl,
          libnetaddr-ip-perl,
@@ -26,5 +27,19 @@ Depends: libpve-common-perl (>= 5.0-45),
 Recommends: ifupdown2
 Suggests: frr-pythontools (>= 8.5.1~), dnsmasq,
 Description: Proxmox VE's SDN (Software Defined Network) stack
- This package contains the Software Defined Network (tech preview) for
+ This package contains the perl side of the Software Defined Network
+ implementation for Proxmox VE.
+
+Package: libpve-network-api-perl
+Architecture: all
+Depends: libpve-common-perl (>= 5.0-45),
+         pve-firewall (>= 5.1.0~),
+         pve-cluster (>= 8.0.9),
+         libpve-network-perl (= ${binary:Version}),
+         ${misc:Depends},
+         ${perl:Depends},
+Breaks: libpve-network-perl (<< 0.9.9~),
+Replaces: pve-cluster (<< 0.9.9~),
+Description: API endpoints for Proxmox VE's SDN stack
+ This package contains the API endpoints for the Software Defined Network of
  Proxmox VE.

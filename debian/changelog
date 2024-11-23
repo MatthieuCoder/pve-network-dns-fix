@@ -1,65 +1,30 @@
-libpve-network-perl (0.9.8+matthieu-patch7-var3) bookworm; urgency=medium
+libpve-network-perl (0.10.0) bookworm; urgency=medium
 
-  * dhcp: set lease time to 0
+  * d/postinst: do not break, if moving either ipam state or cache file fails
 
- -- Matthieu Pignolet <matthieu@mpgn.dev>
+ -- Proxmox Support Team <support@proxmox.com>  Wed, 20 Nov 2024 16:14:39 +0100
 
-libpve-network-perl (0.9.8+matthieu-patch7-var3) bookworm; urgency=medium
+libpve-network-perl (0.9.9) bookworm; urgency=medium
 
-  * evpn zone: add ip routing for vrfbr interfaces
+  * split package into implementation and API endpoints
 
- -- Matthieu Pignolet <matthieu@mpgn.dev>
- 
-libpve-network-perl (0.9.8+matthieu-patch6-var3) bookworm; urgency=medium
+  * fix #5324: non-vlan-aware zone: set MTU for veth links if it's configured
+    for the zone
 
-  * evpn zone: add ip routing for vrfbr interfaces
+  * ipam: move state file of PVE plugin over to common sdn directory
 
- -- Matthieu Pignolet <matthieu@mpgn.dev>
+  * vnets: add ports isolation, allowing one to drop traffic between all ports
+    that have isolation enabled on the local bridge, while still allowing
+    traffic with non-isolated ports. Basically one can relatively simply
+    disable traffic between guests but still allow traffic from outside.
 
-libpve-network-perl (0.9.8+matthieu-patch6-var2) bookworm; urgency=medium
+  * api: add endpoints for vnet-level firewall
 
-  * evpn zone: add dummy interface address in vrfbr
+  * debian: migrate legacy mac/ipam cache/state files on upgrade
 
- -- Matthieu Pignolet <matthieu@mpgn.dev>
+ -- Proxmox Support Team <support@proxmox.com>  Tue, 19 Nov 2024 16:27:15 +0100
 
-libpve-network-perl (0.9.8+matthieu-patch5-var1) bookworm; urgency=medium
-
-  * dnsmasq: use system dns servers 
-
- -- Matthieu Pignolet <matthieu@mpgn.dev>
-
-libpve-network-perl (0.9.8+matthieu-patch4) bookworm; urgency=medium
-
-  * evpn: remove base vxlan for zone where 
-
- -- Matthieu Pignolet <matthieu@mpgn.dev>
-
-libpve-network-perl (0.9.8+matthieu-patch3) bookworm; urgency=medium
-
-  * bgp: fix routes coming from the evpn backbone
-
- -- Matthieu Pignolet <matthieu@mpgn.dev>
-
-libpve-network-perl (0.9.8+matthieu-patch2) bookworm; urgency=medium
-
-  * bgp: fix routes coming from the evpn backbone
-
- -- Matthieu Pignolet <matthieu@mpgn.dev>
-
-libpve-network-perl (0.9.8+matthieu-patch1) bookworm; urgency=medium
-
-  * bgp: make ipv6 be published to all peers
-
- -- Matthieu Pignolet <matthieu@mpgn.dev>
-
-libpve-network-perl (0.9.8+matthieu-patch) bookworm; urgency=medium
-
-  * dhcp: dnsmasq: add support for vrf(s)
-  * evpn: add support for dhcp
-
- -- Matthieu Pignolet <matthieu@mpgn.dev>
- 
- libpve-network-perl (0.9.8) bookworm; urgency=medium
+libpve-network-perl (0.9.8) bookworm; urgency=medium
 
   * zones: add method for getting MTU
 
