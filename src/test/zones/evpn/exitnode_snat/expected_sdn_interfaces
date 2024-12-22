@@ -38,11 +38,9 @@ iface vrf_myzone
 auto vrfbr_myzone
 iface vrfbr_myzone
 	bridge-ports vrfvx_myzone
-	address 10.255.255.1/32
 	bridge_stp off
 	bridge_fd 0
 	mtu 1450
-	ip-forward on
 	vrf vrf_myzone
 
 auto vrfvx_myzone
@@ -68,3 +66,18 @@ iface vxlan_myvnet2
 	bridge-learning off
 	bridge-arp-nd-suppress on
 	mtu 1450
+
+auto xvrf_myzone
+iface xvrf_myzone
+	link-type veth
+	address 10.255.255.1/30
+	veth-peer-name xvrfp_myzone
+	mtu 1500
+
+auto xvrfp_myzone
+iface xvrfp_myzone
+	link-type veth
+	address 10.255.255.2/30
+	veth-peer-name xvrf_myzone
+	vrf vrf_myzone
+	mtu 1500

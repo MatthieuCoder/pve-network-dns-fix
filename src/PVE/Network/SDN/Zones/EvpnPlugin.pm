@@ -243,17 +243,14 @@ sub generate_sdn_config {
 	    my $brvrf = "vrfbr_$zoneid";
 	    @iface_config = ();
 	    push @iface_config, "bridge-ports $iface_vrf_vxlan";
-	    push @iface_config, "address 10.255.255.1/32";
 	    push @iface_config, "bridge_stp off";
 	    push @iface_config, "bridge_fd 0";
 	    push @iface_config, "mtu $mtu" if $mtu;
-	    push @iface_config, "ip-forward on" if $enable_forward_v4;
-    	push @iface_config, "ip6-forward on" if $enable_forward_v6;
 	    push @iface_config, "vrf $vrf_iface";
 	    push(@{$config->{$brvrf}}, @iface_config) if !$config->{$brvrf};
 	}
 
-	if ( $is_evpn_gateway && $exitnodes_local_routing ) {
+	if ( $is_evpn_gateway || $exitnodes_local_routing ) {
 	    #add a veth pair for local cross-vrf routing
 	    my $iface_xvrf = "xvrf_$zoneid";
 	    my $iface_xvrfp = "xvrfp_$zoneid";
